@@ -6,23 +6,39 @@
 1. clone following git repository  https://github.com/ldasun/basketballInfo.git or download the and extract the content.
 2. open shell and install the Dependencies by 
 
+	```
 	pip install -r requirements.txt
+	```
 	
 3. execute following commands on a shell to migrate model to db.
 	
-	
+	```
 	 python manage.py makemigrations
 	 python manage.py migrate
-	 
+	```
+	
 4. create data from following command 
 
+	```
 	 python manage.py populate_data
-	 
+	```
+	
 5. create super user by following command and remember the login information.
 
+	```
 	python manage.py createsuperuser
+	```
 	
+## Running Server and Admin portal ##
+
+	```	
+	python manage.py runserver	
+	```
 	
+	* Admin portal can be accessed by following URL
+
+		http://127.0.0.1:8000/
+
 	
 ## Rest End points ##
 
