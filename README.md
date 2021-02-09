@@ -53,6 +53,6 @@
 		e.g. http://127.0.0.1:8000/basketballinfo/api/players/getByTeam/?team_id=1
 		
 	3)To get list if players by given percentile
-		http://127.0.0.1:8000/basketballinfo/api/teams/1/getByPercentile/?percentile=<<percentile>>
+		http://127.0.0.1:8000/basketballinfo/api/teams/<<team_id>>/getPlayersByPercentile/?percentile=<<percentile>>
 		
-		e.g. http://127.0.0.1:8000/basketballinfo/api/teams/1/getByPercentile/?percentile=90 
+		e.g. http://127.0.0.1:8000/basketballinfo/api/teams/1/getPlayersByPercentile/?percentile=90 
