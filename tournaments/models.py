@@ -29,17 +29,18 @@ class Team(models.Model):
     def list_players_by_team(self):
         return Player.objects.filter(team=self)
 
-    def list_players_by_percentile(self, percentile):
+    def list_players_by_percentile(self, percentile,team):
         #since team has 10 players maximum
         #count = 10-int(math.ceil((10 * percentile) / 100))
-        player_list = PlayerStatistic.objects.filter().annotate(
+        player_list = PlayerStatistic.objects.values('player__id').filter(player__team=team).annotate(
             averaged_points=Avg('score')).order_by('averaged_points')
+    
         count = int(math.ceil((len(player_list) * int(percentile)) / 100))
         selected_player_list = []
-        for idx, val in enumerate(player_list):
+        for idx, player_stat in enumerate(player_list): 
             idx += 1
             if idx > count:
-                player = Player.objects.get(id=val['player_id'])
+                player = Player.objects.get(id=player_stat['player__id']) 
                 selected_player_list.append(player)
         return selected_player_list
 
@@ -82,11 +83,23 @@ class Tournament(models.Model):
     country = models.CharField(verbose_name='Country',
                                max_length=100, blank=False,  null=False)
 
+    def __str__(self):
+        return 'Name : %s %s' % (self.name)
+
+    def get_absolute_url(self):
+        return reverse('tournament', args=[str(self.id)])
+
 
 class Season(models.Model):
     name = models.CharField(verbose_name='Name',
                             max_length=100, blank=False,  null=False)
     tournament = models.ForeignKey(Tournament, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return 'Name : %s %s' % (self.name)
+
+    def get_absolute_url(self):
+        return reverse('season', args=[str(self.id)])
 
 
 class Game(models.Model):
@@ -95,14 +108,12 @@ class Game(models.Model):
     QF = 'QF'
     SF = 'SF'
     FI = 'FI'
-    WI = 'WI'
 
     ROUNDS = [
         (FR, 'First Round'),
         (QF, 'Quarter Final'),
         (SF, 'Semi Final'),
-        (FI, 'Final'),
-        (WI, 'Winner')
+        (FI, 'Final')
     ]
 
     season = models.ForeignKey(

@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.generic.base import TemplateView
 
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -35,7 +36,7 @@ def get_players_by_percentile_api_view(request, team_id=None):
     percentile = request.GET.get('percentile', None)
     #return JsonResponse({'percentile': percentile, 'team_id': team_id}, status=status.HTTP_200_OK)
     team = get_object_or_404(Team, id=team_id)
-    selected_players = team.list_players_by_percentile(percentile)
+    selected_players = team.list_players_by_percentile(percentile,team)
     serializer = PlayerSerializer(selected_players, many=True)
     return JsonResponse({'selected_players_in_' + str(percentile) + '_percentile': serializer.data}, safe=False,
                         status=status.HTTP_200_OK)
